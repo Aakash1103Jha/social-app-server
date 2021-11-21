@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose")
 
-const User = new Schema(
+const Post = new Schema(
 	{
 		content: [{ type: String, required: true }],
 		hashtags: [{ type: String, required: true }],
@@ -12,7 +12,7 @@ const User = new Schema(
 			type: String,
 			required: true,
 		},
-		_userId: {
+		_username: {
 			type: String,
 			required: true,
 		},
@@ -20,4 +20,4 @@ const User = new Schema(
 	{ timestamps: true },
 )
 
-module.exports = model("users", User)
+module.exports = model("posts", Post)
