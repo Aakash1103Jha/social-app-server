@@ -22,3 +22,9 @@ try {
 } catch (err) {
 	console.error(`MongoDB connection failed: ${err.message}`)
 }
+
+const AuthRoute = require("./Routes/auth-route")
+const PostRoute = require("./Routes/post-route")
+
+app.use("/auth/", AuthRoute)
+app.use("/post/", PostRoute)
