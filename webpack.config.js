@@ -3,15 +3,7 @@ const nodeExternals = require("webpack-node-externals")
 const path = require("path")
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 
-const VENDOR_LIBS = [
-	"axios",
-	// "babel-polyfill",
-	"cors",
-	"dotenv",
-	"express",
-	"mongoose",
-	"multer",
-]
+const VENDOR_LIBS = ["cors", "dotenv", "express", "mongoose", "multer"]
 
 module.exports = {
 	mode: "production",
