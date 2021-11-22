@@ -73,4 +73,44 @@ exports.onLoginUser = async (req, res) => {
 }
 
 exports.onDeleteUser = async (req, res) => {}
-exports.onResetPassword = async (req, res) => {}
+
+exports.onResetPassword = async (req, res) => {
+	// check for req.body
+	if (!req.body) {
+		return res.status(400).json("Please provide details for all mandatory fields")
+	}
+	try {
+		// check if user is already registered
+		const user = await User.findOne({ email: req.body.email })
+
+		if (!user) {
+			// user is not registered
+			return res.status(404).json("User with this email does not exist")
+		}
+		try {
+			// user is registered and found in DB
+			// hash password
+			const salt = await bcrypt.genSalt(5)
+			const newHashPassword = await bcrypt.hash(req.body.password, salt)
+
+			// update user password with new hash password
+			await User.findOneAndUpdate(
+				{ email: user.email },
+				{ $set: { password: newHashPassword } },
+				{ upsert: false, useFindAndModify: false },
+				(err, doc) => {
+					if (err) {
+						console.error(err.message)
+						return res.status(504).json(err.message)
+					}
+					return res.status(200).json(doc)
+				},
+			)
+		} catch (error) {
+			console.error(`Password reset error: ${error.message}`)
+			return res.status(504).json(error.message)
+		}
+	} catch (error) {
+		console.error(`Error in finding user: ${error.message}`)
+	}
+}
