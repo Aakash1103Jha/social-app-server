@@ -25,6 +25,8 @@ try {
 
 const AuthRoute = require("./Routes/auth-route")
 const PostRoute = require("./Routes/post-route")
+const UserRoute = require("./Routes/user-route")
 
 app.use("/auth/", AuthRoute)
 app.use("/post/", PostRoute)
+app.use("/users/", UserRoute)
