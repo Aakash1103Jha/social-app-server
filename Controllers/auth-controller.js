@@ -49,6 +49,28 @@ exports.onRegisterUser = async (req, res) => {
 	}
 }
 
-exports.onLoginUser = async (req, res) => {}
-exports.onResetPassword = async (req, res) => {}
+exports.onLoginUser = async (req, res) => {
+	// if req.body is empty
+	if (!req.body) {
+		return res.status(400).json("Please provide details for all mandatory fields")
+	}
+	const emailInput = req.body.email
+	const passwordInput = req.body.password
+
+	// check if user exists
+	const user = await User.findOne({ email: emailInput.trim() })
+	if (!user) {
+		return res.status(400).json("User does not exists")
+	}
+	// check if password is correct
+	const validPassword = await bcrypt.compare(passwordInput, user.password)
+
+	if (!validPassword) {
+		return res.status(400).json("Invalid password")
+	}
+	const token = jwt.sign({ _id: user._id, email: user.email }, process.env.TOKEN_SECRET)
+	return res.status(200).json(token)
+}
+
 exports.onDeleteUser = async (req, res) => {}
+exports.onResetPassword = async (req, res) => {}
