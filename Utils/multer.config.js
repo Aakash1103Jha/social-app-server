@@ -5,7 +5,10 @@ const fileTypes = ["image/jpg", "image/jpeg", "image/png"]
 
 const userAvatarStorageEngine = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, path.resolve(__dirname, "..", "Uploads", "User-Avatar"))
+		cb(
+			null,
+			path.resolve(__dirname, "..", "..", "social-app", "public", "Uploads", "User-Avatar"),
+		)
 	},
 	filename: (req, file, cb) => {
 		cb(null, file.originalname + Date.now().toString())
@@ -13,14 +16,16 @@ const userAvatarStorageEngine = multer.diskStorage({
 })
 const postImgStorageEngine = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, path.resolve(__dirname, "..", "Uploads", "Post-Imgs"))
+		cb(
+			null,
+			path.resolve(__dirname, "..", "..", "social-app", "public", "Uploads", "Post-Imgs"),
+		)
 	},
 	filename: (req, file, cb) => {
 		cb(null, Date.now().toString() + "-" + file.originalname)
 	},
 })
 const commonFileFilter = (req, file, cb) => {
-	console.info(file)
 	if (fileTypes.includes(file.mimetype)) {
 		cb(null, true)
 	} else {
@@ -29,9 +34,9 @@ const commonFileFilter = (req, file, cb) => {
 }
 
 const postImgUploadHandler = multer({ fileFilter: commonFileFilter, storage: postImgStorageEngine })
-// const userAvatarUploadHandler = multer({
-// 	fileFilter: commonFileFilter,
-// 	storage: userAvatarStorageEngine,
-// })
+const userAvatarUploadHandler = multer({
+	fileFilter: commonFileFilter,
+	storage: userAvatarStorageEngine,
+})
 
 module.exports = { postImgUploadHandler }
