@@ -54,11 +54,11 @@ exports.onLoginUser = async (req, res) => {
 	if (!req.body) {
 		return res.status(400).json("Please provide details for all mandatory fields")
 	}
-	const emailInput = req.body.email
+	const username = req.body.username
 	const passwordInput = req.body.password
 
 	// check if user exists
-	const user = await User.findOne({ email: emailInput.trim() })
+	const user = await User.findOne({ username: username.trim() })
 	if (!user) {
 		return res.status(400).json("User does not exists")
 	}
