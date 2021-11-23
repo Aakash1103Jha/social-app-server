@@ -4,3 +4,4 @@ build
 .env
 *.rest
 .DS_Store
+Uploads
